@@ -13,6 +13,23 @@ export const useAutoTask = () => {
   return context;
 };
 
+const saveToLocalStorage=(localData)=>{
+  if(localData.actionName==="growth"){
+              const prevGrowth = localStorage.getItem("growthLogs")
+              const logs = prevGrowth?JSON.parse(prevGrowth):[]
+              logs.push(localData.values)
+              const newGrowth = JSON.stringify(logs)
+              localStorage.setItem("growthLogs",newGrowth);
+            }
+            else if(localData.actionName==="doctor_contact"){
+              const prevContString = localStorage.getItem("importantMedicalContacts");
+              let contacts = prevContString ? JSON.parse(prevContString) : [];
+              contacts.push(localData.values);
+              const newContString = JSON.stringify(contacts);
+              localStorage.setItem("importantMedicalContacts", newContString);
+            }
+}
+
 export const AutoTaskProvider = ({ children }) => {
   const [updates, setUpdates] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,38 +64,12 @@ const getResponse= async (data)=>{
           setUpdates([...response_data,...updates])
 
           for(let localData of response_data){
-            if(localData.actionName==="growth"){
-              const prevGrowth = localStorage.getItem("growthLogs")
-              const logs = prevGrowth?JSON.parse(prevGrowth):[]
-              logs.push(localData.values)
-              const newGrowth = JSON.stringify(logs)
-              localStorage.setItem("growthLogs",newGrowth);
-            }
-            else if(localData.actionName==="doctor_contact"){
-              const prevContString = localStorage.getItem("importantMedicalContacts");
-              let contacts = prevContString ? JSON.parse(prevContString) : [];
-              contacts.push(localData.values);
-              const newContString = JSON.stringify(contacts);
-              localStorage.setItem("importantMedicalContacts", newContString);
-            }
+            saveToLocalStorage(localData)
           }
         }
         else{
           setUpdates([response_data,...updates])
-            if(response_data?.actionName==="growth"){
-              const prevGrowth = localStorage.getItem("growthLogs")
-              const logs = prevGrowth?JSON.parse(prevGrowth):[]
-              logs.push(response_data.values)
-              const newGrowth = JSON.stringify(logs)
-              localStorage.setItem("growthLogs",newGrowth);
-            }
-            else if(response_data.actionName==="doctor_contact"){
-              const prevContString = localStorage.getItem("importantMedicalContacts");
-              let contacts = prevContString ? JSON.parse(prevContString) : [];
-              contacts.push(response_data.values);
-              const newContString = JSON.stringify(contacts);
-              localStorage.setItem("importantMedicalContacts", newContString);
-            }
+            saveToLocalStorage(response_data)
         }
 
         return response_data
