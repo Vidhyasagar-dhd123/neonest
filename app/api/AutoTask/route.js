@@ -22,6 +22,12 @@ export async function POST(req){
     const formData = await req.formData()
     const message = formData.get("message")
     const file = formData.get("file")
+
+    const errorMessage = {isAction:false,request:"failed"}
+
+    if(!message || message.length<9)
+        return Response.json({...errorMessage,actionName:"Too Few Information"})
+
     const agent = new JSONAgent({model:genAi})
     const date = new Date()
     const prompt = message+`. The date is ${date.toUTCString()} and time is ${date.toTimeString()}.`
@@ -32,7 +38,7 @@ export async function POST(req){
     const userExists = await User.findById(user?.user?.id)
 
     if(!user || !userExists || !user?.user?.id){
-        return Response.json({"message":"Authentication Error"},{status:401})
+        return Response.json({...errorMessage,actionName:"Authentication Failed"},{status:401})
     }
 
     const uploadFile = async()=>{
@@ -79,7 +85,7 @@ export async function POST(req){
             case "notification":
                 return await saveNotification(task,user?.user)
             default:
-                return {isAction:false,actionName:"Invalid request",request:"failed"}
+                return {...errorMessage,actionName:"Invalid request"}
         }
     }
     const replyMessage = []
@@ -97,12 +103,12 @@ export async function POST(req){
             if(agent_reply)
                 replyMessage.push(await saveData(agent_reply))
             else
-                replyMessage.push({isAction:false, actionName:"no action",request:"null"})
+                replyMessage.push({...errorMessage,actionName:"Invalid request"})
         }
     console.log(replyMessage)
-    return Response.json(replyMessage.length>0?replyMessage:{isAction:false,actionName:"Invalid request1",request:"failed"})
+    return Response.json(replyMessage.length>0?replyMessage:{...errorMessage,actionName:"Invalid request"})
 }catch(err){
     console.log("Error Occured",err)
-    return Response.json({isAction:false,actionName:"Invalid request",request:"failed"})
+    return Response.json({...errorMessage,actionName:"Invalid request"})
 }
 }

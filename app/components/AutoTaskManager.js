@@ -34,6 +34,8 @@ const AutoTaskManager=()=>{
     }
 
     const sendRequest=async ()=>{
+        if(!message || message?.length<9)
+            return
         const data = {
             message,
             file
@@ -47,6 +49,7 @@ const AutoTaskManager=()=>{
     }
 
     const cleanUp=()=>{
+        if(!message || message?.length<10)return
         setMessage("")
         setFile(null)
         setUploaded(false)
@@ -68,6 +71,8 @@ const AutoTaskManager=()=>{
                 return "🖼"
             case "sleep":
                 return "😴"
+            case "notification":
+                return "🔴"
             default :
                 return "❓"
         }
@@ -95,7 +100,6 @@ const AutoTaskManager=()=>{
         const UI = updates.map((msg,i)=>
         {
             if(msg.isAction){
-                if(msg.actionName==="notification") return;
                 return <div style={colorType(msg?.request)} className="p-2 rounded m-2 inline-block" key={i}>
                             {getContent(msg.actionName)}
                             {" "+ msg.actionName}
