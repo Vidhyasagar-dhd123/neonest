@@ -17,7 +17,6 @@ const AutoTaskManager=()=>{
 
     const handleInput = (event)=>{
         setMessage(event.target.value)
-        console.log(message)
     }
 
     const handleFileInput = ()=>{
@@ -40,8 +39,8 @@ const AutoTaskManager=()=>{
             file
         }
     const response = await getResponse(data)
-    console.log(response)
     }
+
     const colorType = (type)=>{
         if(type && type=="accepted") return {color:"white",background:"#4b0"}
         else return {color:"#daa",background:"#d66"}

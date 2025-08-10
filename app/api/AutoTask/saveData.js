@@ -65,7 +65,7 @@ const saveMemory = async (task,user,uploadData)=>{
         const memory = new Memory(memoryConfig)
         await memory.save()
         console.log("Memory Saved")
-        await saveConfirmation(task,user,"Memory");
+        await saveConfirmation(task,user,"Memories");
         return task
     }
     catch(err){
