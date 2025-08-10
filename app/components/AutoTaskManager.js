@@ -1,7 +1,6 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion";
-import AutoTask from "./AutoTask";
 import { Button } from "./ui/Button";
 import Input from "./ui/Input";
 import { useAutoTask } from "../context/AutoTaskContext";
@@ -132,7 +131,7 @@ const AutoTaskManager=()=>{
                             <Input value={message} onInput={(e)=>{handleInput(e)}} className="flex-grow !w-[95%]  sm:w-full m-4 p-2" placeholder="Manage Your Logs Here... e.g. Add Essential"></Input>
                         
                         <div className="m-2 w-full sm:w-auto flex items-center justify-end sm:justify-center">
-                            {isLoading && <Loader2Icon className="animate-spin"></Loader2Icon>}
+                            {isLoading && <Loader2Icon className="animate-spin m-2"></Loader2Icon>}
                              {   
                             !uploaded ?
                             
@@ -201,10 +200,8 @@ const AutoTaskManager=()=>{
                                     </Trash>
                                 </motion.button>
                             </div>
-                            
-                            
                         }
-                        </div>
+                    </div>
                     
                 </motion.div>
             } 

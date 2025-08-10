@@ -13,7 +13,6 @@ import { saveMemory,
 
 } from "./saveData";
 import { cloudinary } from "@/lib/cloudinary";
-import { isAccessor } from "typescript";
 
 const genAi = new GoogleGenerativeAI(process.env.GEMINI_API)
 export async function POST(req){
