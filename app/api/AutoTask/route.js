@@ -21,6 +21,7 @@ export async function POST(req){
     const formData = await req.formData()
     const message = formData.get("message")
     const file = formData.get("file")
+    const time = formData.get("time")
 
     const errorMessage = {isAction:false,request:"failed"}
 
@@ -29,7 +30,7 @@ export async function POST(req){
 
     const agent = new JSONAgent({model:genAi})
     const date = new Date()
-    const prompt = message+`. The date is ${date.toUTCString()} and time is ${date.toTimeString()}.`
+    const prompt = message+`. The date is ${date.toUTCString()} and time is ${time?time:date.toTimeString()}.`
     const agent_reply = await agent.getResponse(prompt)
     console.log('agent reply :',agent_reply)
     console.log(prompt)

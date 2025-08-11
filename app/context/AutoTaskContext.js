@@ -45,6 +45,7 @@ const getResponse= async (data)=>{
         if(!isAuth||!data.message||data.message==="") return;
 
         formData.append("message",data.message)
+        formData.append("time",new Date().toLocaleTimeString())
 
         if(data.file){
           formData.append("file",data.file)
